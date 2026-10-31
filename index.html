@@ -3,63 +3,150 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Demostración de verificación simulada</title>
+<title>Portal de consulta demostrativo · Giovanny</title>
 <style>
-:root { --site-primary:#173b66; --site-on-primary:#fff; --site-secondary:#e8eef5; --site-on-secondary:#18324d; --site-background:#f3f6fa; --site-on-background:#172536; color-scheme:light dark; }
-*{box-sizing:border-box} body{margin:0;font-family:Inter,system-ui,sans-serif;background:var(--site-background);color:var(--site-on-background)}
-#app{min-height:100vh;background:var(--site-background);color:var(--site-on-background)}
-.top{background:var(--site-primary);color:white;padding:22px max(22px,calc((100vw - 980px)/2))}
-.topline{display:flex;align-items:center;gap:14px}.mark{width:42px;height:42px;border:1px solid #ffffff80;border-radius:12px;display:grid;place-items:center;font-weight:800;font-size:12px}
-.kicker{font-size:11px;letter-spacing:.14em;text-transform:uppercase;opacity:.8}h1{font-size:25px;margin:3px 0 0}
-.wrap{width:min(760px,calc(100% - 32px));margin:34px auto 60px}
-.notice{background:#fff6df;border:1px solid #e9c96d;color:#654b0a;border-radius:12px;padding:14px 16px;display:flex;gap:10px;line-height:1.45;font-size:14px}.notice strong{display:block;margin-bottom:2px}
-.card{background:light-dark(#fff,#1b2633);border:1px solid light-dark(#dce4ed,#344253);border-radius:16px;padding:26px;margin-top:20px;box-shadow:0 8px 28px #10243a12}
-.card h2{font-size:19px;margin:0 0 8px}.muted{color:light-dark(#5b6b7c,#b3c0cd);font-size:14px;line-height:1.5}
-label{display:block;font-weight:650;font-size:13px;margin:22px 0 8px}
-input,select{width:100%;border:1px solid light-dark(#cbd5e1,#4b5b6b);background:light-dark(#fff,#111b26);color:light-dark(#172536,#f2f5f8);padding:13px 14px;border-radius:9px;font:inherit}
-button{margin-top:14px;border:0;border-radius:9px;background:var(--site-primary);color:white;font-weight:700;padding:13px 18px;cursor:pointer}
-.result{display:none;margin-top:20px;border:1px solid light-dark(#dce4ed,#344253);border-radius:14px;overflow:hidden}
-.result-head{padding:17px 20px;background:var(--site-secondary);color:var(--site-on-secondary);display:flex;justify-content:space-between;gap:12px}
-.pill{font-size:11px;font-weight:800;letter-spacing:.08em;border:1px solid currentColor;border-radius:999px;padding:6px 9px}
-.result-body{padding:20px}.grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px;margin:16px 0}
-.field{padding:12px;background:light-dark(#f5f7fa,#111b26);border-radius:9px}.field small{display:block;color:light-dark(#657487,#aab7c5);font-size:11px;text-transform:uppercase;margin-bottom:6px}.field b{font-size:14px;overflow-wrap:anywhere}
-.simflag{border-left:4px solid #c58a17;padding:10px 12px;background:light-dark(#fff8e8,#342a17);color:light-dark(#654b0a,#f3d99a);font-size:13px;line-height:1.5}
-.explain{margin-top:20px}.explain ol{padding-left:20px;line-height:1.6;font-size:14px}footer{text-align:center;padding:20px;color:light-dark(#657487,#aab7c5);font-size:12px}
-@media(max-width:560px){.grid{grid-template-columns:1fr}.result-head{flex-direction:column}.top{padding:18px}}
+:root {
+  --site-primary: #173b66;
+  --site-on-primary: #ffffff;
+  --site-secondary: #e8eef5;
+  --site-on-secondary: #18324d;
+  --site-background: #f3f6fa;
+  --site-on-background: #172536;
+  --site-font-body: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  --site-font-heading: Inter, ui-sans-serif, system-ui, sans-serif;
+  --site-heading-scale: 1;
+  --site-spacing-scale: 1;
+  --site-radius-scale: 1;
+  --site-decoration-opacity: 1;
+  color-scheme: light dark;
+}
+* { box-sizing: border-box; }
+body { margin: 0; font-family: var(--site-font-body); background: #e8edf3; color: #172536; }
+#app { min-height: 100vh; width: 100%; background-color: var(--site-background); color: var(--site-on-background); border-radius: 0; }
+.top { position:relative; overflow:hidden; background:#fff; color:#172536; padding:18px max(22px,calc((100vw - 1040px)/2)); border-bottom:3px solid #23466b; box-shadow:0 3px 12px #10243a12; }
+.top:after { content:""; position:absolute; width:260px; height:260px; border:1px solid #ffffff24; border-radius:50%; right:8%; top:-160px; box-shadow:0 0 0 28px #ffffff0a,0 0 0 58px #ffffff08; pointer-events:none; }
+.topline { display:flex; align-items:center; gap:14px; }
+.mark { width:54px; height:54px; border:2px solid #23466b; border-radius:50%; display:grid; place-items:center; font-size:10px; font-weight:900; letter-spacing:-.5px; color:#23466b; background:#f5f8fb; }
+.kicker { font-size:11px; letter-spacing:.14em; text-transform:uppercase; opacity:.8; }
+h1 { font-family:var(--site-font-heading); font-size:calc(23px * var(--site-heading-scale)); margin:3px 0 0; }
+.wrap { width:min(1040px, calc(100% - 32px)); margin:22px auto 60px; }
+.notice { background:#fff6df; border:1px solid #e9c96d; color:#654b0a; border-radius:14px; padding:16px 18px; display:flex; gap:12px; align-items:flex-start; line-height:1.5; font-size:14px; box-shadow:0 6px 18px #7a5b1710; }
+.notice strong { display:block; margin-bottom:2px; }
+.card { background:#fff; border:1px solid #d6dde6; border-radius:4px; padding:calc(26px * var(--site-spacing-scale)); margin-top:16px; box-shadow:0 3px 12px #10243a0b; }
+.card h2 { font-size:calc(19px * var(--site-heading-scale)); margin:0 0 8px; }
+.muted { color:#5b6b7c; font-size:14px; line-height:1.5; }
+label { display:block; font-weight:650; font-size:13px; margin:22px 0 8px; }
+input, select { width:100%; border:1px solid #cbd5e1; background:#fff; color:#172536; padding:13px 14px; border-radius:4px; font:inherit; }
+button { margin-top:14px; border:0; border-radius:4px; background:#234d75; color:white; font-weight:750; padding:13px 20px; cursor:pointer; box-shadow:none; transition:filter .18s ease; }
+button:hover { filter:brightness(1.08); transform:translateY(-1px); box-shadow:0 9px 18px #173b6638; }
+.result { display:none; margin-top:20px; border:1px solid #d6dde6; border-radius:4px; overflow:hidden; }
+.result-head { padding:17px 20px; background:#f1f4f7; color:#18324d; display:flex; justify-content:space-between; align-items:center; gap:12px; }
+.result-head strong { font-size:16px; }
+.pill { font-size:11px; font-weight:800; letter-spacing:.08em; border:1px solid currentColor; border-radius:999px; padding:6px 9px; white-space:nowrap; }
+.result-body { padding:20px; }
+.grid { display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:14px; margin:16px 0; }
+.field { padding:12px; background:light-dark(#f5f7fa,#111b26); border-radius:9px; }
+.field small { display:block; color:light-dark(#657487,#aab7c5); font-size:11px; text-transform:uppercase; letter-spacing:.07em; margin-bottom:6px; }
+.field b { font-size:14px; overflow-wrap:anywhere; }
+.simflag { border-left:4px solid #c58a17; padding:10px 12px; background:light-dark(#fff8e8,#342a17); color:light-dark(#654b0a,#f3d99a); font-size:13px; line-height:1.5; }
+.explain { margin-top:20px; }
+.explain ol { padding-left:20px; line-height:1.6; font-size:14px; }
+.certificate { position:relative; overflow:hidden; margin:22px auto 0; max-width:900px; min-height:620px; padding:26px clamp(18px,4vw,46px); border:1px solid #aeb8c4; background:repeating-linear-gradient(0deg,#fff,#fff 3px,#f8fafc 4px); color:#111827; box-shadow:0 8px 24px #17253618; }
+.certificate:before { content:"SIMULACIÓN · NO VÁLIDO · PROPIEDAD DE GIOVANNY"; position:absolute; z-index:2; left:-12%; top:46%; width:124%; text-align:center; transform:rotate(-18deg); color:#b91c1c45; border-top:5px solid #b91c1c35; border-bottom:5px solid #b91c1c35; padding:9px 0; font-size:clamp(18px,3.2vw,37px); line-height:1.2; font-weight:950; letter-spacing:.06em; pointer-events:none; }
+.certificate-head { display:flex; justify-content:space-between; align-items:flex-start; gap:14px; border-bottom:2px solid #263f5c; padding-bottom:16px; }
+.certificate-brand { color:#263f5c; font-weight:900; font-size:12px; line-height:1.4; }
+.certificate-brand span { display:block; font-size:10px; font-weight:600; }
+.certificate-ref { border:1px solid #64748b; padding:8px 10px; font-size:10px; text-align:center; }
+.certificate-title { text-align:center; margin:28px auto 20px; max-width:650px; border:2px solid #263f5c; border-radius:12px; padding:12px; font-size:clamp(19px,3vw,29px); font-weight:950; }
+.certificate-copy { font-size:12px; line-height:1.7; text-align:justify; }
+.certificate-person { text-align:center; font-size:17px; font-weight:900; margin:24px 0 8px; }
+.certificate-status { border:1px solid #9ca3af; padding:14px; margin:18px 0; font-size:12px; line-height:1.6; background:#ffffffc9; }
+.certificate-bottom { display:flex; justify-content:space-between; align-items:end; gap:16px; margin-top:40px; font-size:10px; }
+.certificate-seal { width:92px; height:92px; border:3px double #294b70; border-radius:50%; display:grid; place-items:center; text-align:center; color:#294b70; font-weight:900; transform:rotate(-12deg); }
+.certificate-warning { margin-top:20px; background:#fff1f1; border:1px solid #e7b4b4; color:#991b1b; padding:10px; text-align:center; font-weight:900; font-size:11px; }
+footer { text-align:center; padding:20px; color:light-dark(#657487,#aab7c5); font-size:12px; }
+@media(max-width:560px) { .grid {grid-template-columns:1fr;} .result-head {align-items:flex-start; flex-direction:column;} .top {padding:18px;} }
+@media(prefers-color-scheme:dark) { .notice {background:#342a17;color:#f3d99a;border-color:#806322;} }
 </style>
 </head>
 <body>
 <div id="app">
-<header class="top"><div class="topline"><div class="mark">DEMO</div><div><div class="kicker">Laboratorio educativo · ejemplo ficticio</div><h1>Demostración de verificación</h1></div></div></header>
-<main class="wrap">
-<div class="notice"><span>⚠️</span><div><strong>SIMULACIÓN – NO OFICIAL</strong>Esta página es un ejemplo educativo. No pertenece al Órgano Judicial, no valida certificados y no consulta ninguna base de datos.</div></div>
-<section class="card">
-<h2>Verificación de ejemplo</h2><p class="muted">Introduce cualquier texto para observar cómo una página puede mostrar un resultado generado localmente, sin comprobar un documento real.</p>
-<label for="codigo">Código de prueba</label><input id="codigo" autocomplete="off" placeholder="Ej.: DEMO-2026-001" maxlength="60">
-<label for="estado">Resultado ficticio que se mostrará</label><select id="estado"><option value="VIGENTE">VIGENTE (simulado)</option><option value="RECHAZADO">RECHAZADO (simulado)</option><option value="NO ENCONTRADO">NO ENCONTRADO (simulado)</option></select>
-<button id="verify">Generar resultado de demostración</button>
-<div class="result" id="result" aria-live="polite"><div class="result-head"><strong>Resultado de la consulta (DEMO)</strong><span class="pill" id="pill">SIMULADO</span></div><div class="result-body">
-<div class="simflag"><b>ATENCIÓN:</b> los datos que aparecen abajo fueron creados por JavaScript en este navegador. No proceden de un registro oficial.</div>
-<div class="grid">
-<div class="field"><small>N.º de consulta ficticio</small><b id="numero">DEMO-000001</b></div><div class="field"><small>Código introducido</small><b id="codigoOut">—</b></div>
-<div class="field"><small>Emisión de ejemplo</small><b>31/10/2026</b></div><div class="field"><small>Tipo de registro</small><b>REGISTRO FICTICIO</b></div>
-<div class="field"><small>Validez</small><b>NO VERIFICADA</b></div><div class="field"><small>Estado mostrado</small><b id="estadoOut">VIGENTE (SIMULADO)</b></div>
-</div><p class="muted">El estado visible es una selección del usuario, no una conclusión jurídica ni una validación.</p>
-</div></div>
-</section>
-<section class="card explain"><h2>¿Qué demuestra este ejemplo?</h2><ol>
-<li>El formulario acepta un código escrito por el visitante.</li><li>El navegador puede mostrar un estado elegido sin contactar a ninguna institución.</li>
-<li>Un número de consulta y una apariencia formal pueden generarse automáticamente.</li><li>Una captura de pantalla o un resultado visual no prueban autenticidad: se debe verificar en el portal oficial, escribiendo su dirección conocida manualmente.</li>
-</ol><p class="muted">Prueba técnica local: puedes desconectar Internet y seguir usando esta demostración. No guarda ni transmite los datos introducidos.</p></section>
-</main><footer>Material educativo · Sin afiliación institucional · Sin conexión a registros oficiales</footer>
+  <header class="top">
+    <div class="topline">
+      <div class="mark" aria-hidden="true">DEMO</div>
+      <div><div class="kicker">PORTAL DE CONSULTA · SIMULACIÓN EDUCATIVA</div><h1>Verificación de Certificados</h1><div style="font-size:13px;opacity:.9;margin-top:7px">Interfaz de demostración independiente · Propiedad de Giovanny</div></div>
+    </div>
+  </header>
+  <main class="wrap">
+    <div class="notice"><span aria-hidden="true">⚠️</span><div><strong>SIMULACIÓN – NO OFICIAL</strong>Esta página no pertenece a ninguna institución pública, no valida certificados y no consulta bases de datos oficiales. La marca de agua identifica todo el material como demostración de Giovanny.</div></div>
+    <section class="card">
+      <h2>Verificación de documento</h2>
+      <p class="muted">Ingrese el código de demostración para generar un resultado ficticio. Esta página no verifica certificados reales.</p>
+      <label for="codigo">Código del certificado (DEMO)</label>
+      <input id="codigo" autocomplete="off" placeholder="Ingrese el código del certificado" maxlength="60">
+      <label for="estado">Resultado ficticio que se mostrará</label>
+      <select id="estado"><option value="VIGENTE">VIGENTE (simulado)</option><option value="RECHAZADO">RECHAZADO (simulado)</option><option value="NO ENCONTRADO">NO ENCONTRADO (simulado)</option></select>
+      <button id="verify">Verificar</button>
+      <div class="result" id="result" aria-live="polite">
+        <div class="result-head"><strong>Resultado de la Consulta</strong><span class="pill" id="pill">SIMULACIÓN</span></div>
+        <div class="result-body">
+          <div class="simflag"><b>ATENCIÓN:</b> los datos que aparecen abajo fueron creados por JavaScript en este navegador. No proceden de un registro oficial.</div>
+          <div class="grid">
+            <div class="field"><small>N° Consulta</small><b id="numero">DEMO-000001</b></div>
+            <div class="field"><small>Buscar</small><b id="codigoOut">—</b></div>
+            <div class="field"><small>Emisión</small><b>31/10/2026 (EJEMPLO)</b></div>
+            <div class="field"><small>Validez</small><b>NO VERIFICADA</b></div>
+            <div class="field"><small>Registro de muestra</small><b>REJAP (TEXTO DE EJEMPLO)</b></div>
+            <div class="field"><small>Estado</small><b id="estadoOut">VIGENTE (SIMULADO)</b></div>
+          </div>
+          <p class="muted">El estado visible es una selección del usuario, no una conclusión jurídica ni una validación.</p>
+          <div class="certificate" aria-label="Certificado ficticio de demostración">
+            <div class="certificate-head"><div class="certificate-brand">DOCUMENTO DE MUESTRA<span>ÁREA DE DEMOSTRACIÓN EDUCATIVA</span></div><div class="certificate-ref">N.º DE EJEMPLO<br><b id="docNumber">DEMO-000001</b></div></div>
+            <div class="certificate-title">CONSTANCIA DE RESULTADO<br>DE VERIFICACIÓN SIMULADA</div>
+            <div class="certificate-copy">La presente vista es una reproducción gráfica ficticia, elaborada exclusivamente para demostrar que una página puede presentar datos y estados sin consultar un registro institucional. No constituye certificado, constancia ni documento público.</div>
+            <div class="certificate-person">PERSONA DE PRUEBA</div>
+            <div class="certificate-copy" style="text-align:center">IDENTIFICACIÓN: XXX-XXXX</div>
+            <div class="certificate-status"><b>RESULTADO MOSTRADO:</b> <span id="docState">VIGENTE (SIMULADO)</span><br><b>CÓDIGO INGRESADO:</b> <span id="docCode">—</span><br><b>VALIDEZ LEGAL:</b> NINGUNA · NO VERIFICADO</div>
+            <div class="certificate-bottom"><div>Documento ficticio · Sin registro oficial<br>Uso exclusivamente demostrativo</div><div class="certificate-seal">SELLO<br>DEMO</div></div>
+            <div class="certificate-warning">SIMULACIÓN · NO VÁLIDO · PROPIEDAD DE GIOVANNY</div>
+          </div>
+        </div>
+      </div>
+    </section>
+    <section class="card explain">
+      <h2>¿Qué demuestra este ejemplo?</h2>
+      <ol>
+        <li>El formulario acepta un código escrito por el visitante.</li>
+        <li>El navegador puede mostrar un estado elegido sin contactar a ninguna institución.</li>
+        <li>Un número de consulta y una apariencia formal pueden generarse automáticamente.</li>
+        <li>Por eso, una captura de pantalla o un resultado visual no prueban autenticidad: se debe verificar en el portal oficial, escribiendo su dirección conocida manualmente.</li>
+      </ol>
+      <p class="muted">Prueba técnica local: puedes desconectar Internet y seguir usando esta demostración. No guarda ni transmite los datos introducidos.</p>
+    </section>
+  </main>
+  <footer>Material educativo · Sin afiliación institucional · Sin conexión a registros oficiales</footer>
 </div>
 <script>
 (() => {
-const input=document.getElementById('codigo'),select=document.getElementById('estado'),result=document.getElementById('result');let counter=0;
-document.getElementById('verify').addEventListener('click',()=>{
-const code=input.value.trim();if(!code){input.focus();input.setCustomValidity('Escribe un código ficticio para continuar.');input.reportValidity();input.setCustomValidity('');return;}
-counter++;const state=select.value;document.getElementById('numero').textContent='DEMO-'+String(counter).padStart(6,'0');document.getElementById('codigoOut').textContent=code;document.getElementById('estadoOut').textContent=state+' (SIMULADO)';document.getElementById('pill').textContent='SOLO DEMO';result.style.display='block';result.scrollIntoView({behavior:'smooth',block:'nearest'});
-});
+  const input = document.getElementById('codigo');
+  const select = document.getElementById('estado');
+  const result = document.getElementById('result');
+  let counter = 0;
+  document.getElementById('verify').addEventListener('click', () => {
+    const code = input.value.trim();
+    if (!code) { input.focus(); input.setCustomValidity('Escribe un código ficticio para continuar.'); input.reportValidity(); input.setCustomValidity(''); return; }
+    counter += 1;
+    const state = select.value;
+    document.getElementById('numero').textContent = 'DEMO-' + String(counter).padStart(6, '0');
+    document.getElementById('codigoOut').textContent = code;
+    document.getElementById('estadoOut').textContent = state + ' (SIMULADO)';
+    document.getElementById('docNumber').textContent = 'DEMO-' + String(counter).padStart(6, '0');
+    document.getElementById('docCode').textContent = code;
+    document.getElementById('docState').textContent = state + ' (SIMULADO)';
+    document.getElementById('pill').textContent = 'SOLO DEMO';
+    result.style.display = 'block';
+    result.scrollIntoView({behavior:'smooth', block:'nearest'});
+  });
 })();
 </script>
 </body>
